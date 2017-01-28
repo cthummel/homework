@@ -165,7 +165,7 @@ namespace BinaryTreeMatch
 
     class BinaryTree
     {
-        //public Node root;
+        public Node root;
         //public void RootSet(int value)
         //{
         //    root = new Node (value);
@@ -206,7 +206,7 @@ namespace BinaryTreeMatch
                 newroot.rchild = insert(newroot.rchild, v);
             }
 
-            return newroot;
+            return root = newroot;
         }
        
 
