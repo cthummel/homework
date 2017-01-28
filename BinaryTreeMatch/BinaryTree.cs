@@ -172,14 +172,14 @@ namespace BinaryTreeMatch
         //}
         public void Traverse(Node root)
         {
-            if (root.rchild == null && root.lchild == null)
+            if (root == null)
             {
-                Console.WriteLine(root.value);
                 return;
             }
             
             Traverse(root.lchild);
             Traverse(root.rchild);
+            Console.WriteLine(root.value);
         }
         /// <summary>
         /// Inserts a new node into a tree with value v.
