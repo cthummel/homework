@@ -182,12 +182,7 @@ namespace BinaryTreeMatch
 
             return root;
         }
-        public void Traverse(Node root)
-        {
-            
-
-
-        }
+       
 
         /// <summary>
         /// Compares the shape of two tree node by node. Returns true if all nodes are the same shape. Returns false otherwise.
