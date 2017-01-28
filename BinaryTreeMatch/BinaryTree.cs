@@ -10,26 +10,18 @@ namespace BinaryTreeMatch
     {
         static void Main(string[] args)
         {
-            //var rejected = new List<Node>();
-            //var success = new List<Node>();
-            //var success = new List<int[]>();
-            //var rejected = new List<int[]>();
             var successtree = new List<BinaryTree>();
-            var rejectedtree = new List<BinaryTree>();
+            //var rejectedtree = new List<BinaryTree>();
             var uncheckedtree = new List<BinaryTree>();
-
 
             //Formatting the initial line of input that is metadata.
             string line = Console.ReadLine();
             string[] TreeParameters = line.Split();
 
             //Kattis defined n and k values respectively.
-            int TREECOUNT = Int32.Parse(TreeParameters[0]);
+            //int TREECOUNT = Int32.Parse(TreeParameters[0]);
             int MAXELEMENTS = Int32.Parse(TreeParameters[1]);
             
-            //used only for the first tree we look at.
-            bool first = true;
-
             //used to skip steps as needed later.
             bool keepgoing = true;
 
@@ -44,6 +36,11 @@ namespace BinaryTreeMatch
                 for (int i = 0; i < MAXELEMENTS; i++)
                 {
                     int j = Int32.Parse(temp[i]);
+                    if (j <= 0)
+                    {
+                        throw new VariableException("Root Values must be positive");
+                    }
+                    
                     values[i] = j;
                 }
 
@@ -53,78 +50,37 @@ namespace BinaryTreeMatch
                 
                 for (int i = 1; i < MAXELEMENTS; i++)
                 {
-
                     root = tree.insert(root, values[i]);
                 }
-
-                //tree.Traverse(root);
-                //Console.WriteLine(" ");
                 uncheckedtree.Add(tree);
             }
 
             //Tree Checking time!
-            BinaryTree treecheck = new BinaryTree();
             for(int i = 0; i < uncheckedtree.Count; i++)
             {
-                //First tree is always unique so we add it to solutions.
-                if (first == true)
-                {
-                    successtree.Add(uncheckedtree.ElementAt(0));
-                    first = false;
-                    keepgoing = false;
-                }
-
                 //Now we compare each tree to previously created shapes across the Solutions list and Rejected list.
                 if (keepgoing == true)
                 {
-
-                    //First we compare current tree to Solutions to see if there is a shape match.
-
-                    //This iteration of the checking is very costly because i recreate each solution tree again instead of 
-                    //using a saved version from earlier.
                     for (int j = 0; j < successtree.Count; j++)
                     {
-                        if (treecheck.ShapeCheck(successtree.ElementAt(j).root, uncheckedtree.ElementAt(i).root))
+                        if (uncheckedtree.ElementAt(i).ShapeCheck(successtree.ElementAt(j).root, uncheckedtree.ElementAt(i).root))
                         {
-                            successtree.RemoveAt(j);
-                            rejectedtree.Add(uncheckedtree.ElementAt(i));
                             keepgoing = false;
                             break;
                         }
                     }
 
-
-                    //If current wasnt in Solutions list we then compare in rejected list.
-                    if (keepgoing == true)
-                    {
-                        //Again a very inefficient checking method.
-                        for (int k = 0; k < rejectedtree.Count; k++)
-                        {
-                            if (treecheck.ShapeCheck(rejectedtree.ElementAt(k).root, uncheckedtree.ElementAt(i).root))
-                            {
-                                keepgoing = false;
-                                break;
-                            }
-                        }
-
-
-                    }
-
-                    //if current isnt in either list we add it to Solutions list.
+                    //if current isnt on the list we add it to Solutions list.
                     if (keepgoing == true)
                     {
                         successtree.Add(uncheckedtree.ElementAt(i));
                     }
-
                 }
+                keepgoing = true;
             }
-
-            ////Output the final answer.
+            //Output the final answer.
             Console.WriteLine(successtree.Count);
-
         }
-        
-
     }
 
     /// <summary>
@@ -147,10 +103,7 @@ namespace BinaryTreeMatch
     class BinaryTree
     {
         public Node root;
-        //public void RootSet(int value)
-        //{
-        //    root = new Node (value);
-        //}
+        
         public void Traverse(Node root)
         {
             if (root == null)
@@ -173,23 +126,23 @@ namespace BinaryTreeMatch
             
             if (newroot == null)
             {
+                
                 newroot = new Node(v);
-
+                
             }
             else if (v < newroot.value)
             {
-
+                
                 newroot.lchild = insert(newroot.lchild, v);
             }
             else
             {
-
+                
                 newroot.rchild = insert(newroot.rchild, v);
             }
 
             return root = newroot;
         }
-       
 
         /// <summary>
         /// Compares the shape of two tree node by node. Returns true if all nodes are the same shape. Returns false otherwise.
@@ -259,6 +212,19 @@ namespace BinaryTreeMatch
                 }
             }
             return result;
+        }
+    }
+    [Serializable]
+    public class VariableException : Exception
+    {
+        /// <summary>
+        /// Constructs an VariableException containing whose message is the
+        /// undefined variable.
+        /// </summary>
+        /// <param name="variable"></param>
+        public VariableException(String variable)
+            : base(variable)
+        {
         }
     }
 }
