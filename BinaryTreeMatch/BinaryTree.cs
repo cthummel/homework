@@ -11,17 +11,16 @@ namespace BinaryTreeMatch
         static void Main(string[] args)
         {
             var successtree = new List<BinaryTree>();
-            //var rejectedtree = new List<BinaryTree>();
             var uncheckedtree = new List<BinaryTree>();
 
             //Formatting the initial line of input that is metadata.
+
             string line = Console.ReadLine();
             string[] TreeParameters = line.Split();
 
             //Kattis defined n and k values respectively.
-            //int TREECOUNT = Int32.Parse(TreeParameters[0]);
             int MAXELEMENTS = Int32.Parse(TreeParameters[1]);
-            
+
             //used to skip steps as needed later.
             bool keepgoing = true;
 
@@ -36,18 +35,13 @@ namespace BinaryTreeMatch
                 for (int i = 0; i < MAXELEMENTS; i++)
                 {
                     int j = Int32.Parse(temp[i]);
-                    if (j <= 0)
-                    {
-                        throw new VariableException("Root Values must be positive");
-                    }
-                    
                     values[i] = j;
                 }
 
                 //Creates the new test BinaryTree
                 Node root = new Node(values[0]);
                 BinaryTree tree = new BinaryTree();
-                
+
                 for (int i = 1; i < MAXELEMENTS; i++)
                 {
                     root = tree.insert(root, values[i]);
@@ -56,25 +50,23 @@ namespace BinaryTreeMatch
             }
 
             //Tree Checking time!
-            for(int i = 0; i < uncheckedtree.Count; i++)
+            successtree.Add(uncheckedtree.ElementAt(0));
+            for (int i = 1; i < uncheckedtree.Count; i++)
             {
                 //Now we compare each tree to previously created shapes across the Solutions list and Rejected list.
+                for (int j = 0; j < successtree.Count; j++)
+                {
+                    if (uncheckedtree.ElementAt(i).ShapeCheck(successtree.ElementAt(j).root, uncheckedtree.ElementAt(i).root))
+                    {
+                        keepgoing = false;
+                        break;
+                    }
+                }
+
+                //if current isnt on the list we add it to Solutions list.
                 if (keepgoing == true)
                 {
-                    for (int j = 0; j < successtree.Count; j++)
-                    {
-                        if (uncheckedtree.ElementAt(i).ShapeCheck(successtree.ElementAt(j).root, uncheckedtree.ElementAt(i).root))
-                        {
-                            keepgoing = false;
-                            break;
-                        }
-                    }
-
-                    //if current isnt on the list we add it to Solutions list.
-                    if (keepgoing == true)
-                    {
-                        successtree.Add(uncheckedtree.ElementAt(i));
-                    }
+                    successtree.Add(uncheckedtree.ElementAt(i));
                 }
                 keepgoing = true;
             }
@@ -103,14 +95,14 @@ namespace BinaryTreeMatch
     class BinaryTree
     {
         public Node root;
-        
+
         public void Traverse(Node root)
         {
             if (root == null)
             {
                 return;
             }
-            
+
             Traverse(root.lchild);
             Traverse(root.rchild);
             Console.WriteLine(root.value);
@@ -123,21 +115,21 @@ namespace BinaryTreeMatch
         /// <returns></returns>
         public Node insert(Node newroot, int v)
         {
-            
+
             if (newroot == null)
             {
-                
+
                 newroot = new Node(v);
-                
+
             }
             else if (v < newroot.value)
             {
-                
+
                 newroot.lchild = insert(newroot.lchild, v);
             }
             else
             {
-                
+
                 newroot.rchild = insert(newroot.rchild, v);
             }
 
@@ -177,7 +169,7 @@ namespace BinaryTreeMatch
                 }
                 else
                 {
-                     result = ShapeCheck(master.lchild, student.lchild);
+                    result = ShapeCheck(master.lchild, student.lchild);
                 }
             }
             //If master has a right child but no left child
@@ -189,7 +181,7 @@ namespace BinaryTreeMatch
                 }
                 else
                 {
-                     result = ShapeCheck(master.rchild, student.rchild);
+                    result = ShapeCheck(master.rchild, student.rchild);
                 }
             }
             //If Master has both right and left children.
@@ -203,7 +195,7 @@ namespace BinaryTreeMatch
                 {
                     result = ShapeCheck(master.lchild, student.lchild);
 
-                    if(result == false)
+                    if (result == false)
                     {
                         return result;
                     }
@@ -222,8 +214,8 @@ namespace BinaryTreeMatch
         /// undefined variable.
         /// </summary>
         /// <param name="variable"></param>
-        public VariableException(String variable)
-            : base(variable)
+        public VariableException()
+            : base()
         {
         }
     }
