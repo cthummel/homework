@@ -47,10 +47,10 @@ namespace BinaryTreeMatch
                 }
                 
                 //Creates the new test BinaryTree
-                Node root = null;
+                Node root = new Node(values[0]);
                 BinaryTree tree = new BinaryTree();
                 
-                for (int i = 0; i < MAXELEMENTS; i++)
+                for (int i = 1; i < MAXELEMENTS; i++)
                 {
                     tree.insert(root, values[i]);
                 }
@@ -73,11 +73,12 @@ namespace BinaryTreeMatch
                     //using a saved version from earlier.
                     for (int i = 0; i < success.Count; i++)
                     {
-                        BinaryTree successcheck = new BinaryTree();
-                        Node successnode = null;
                         int[] successvalues = new int[MAXELEMENTS];
+                        BinaryTree successcheck = new BinaryTree();
+                        Node successnode = new Node(successvalues[0]);
+                        
                         successvalues = success.ElementAt(i);
-                        for (int j = 0; j < MAXELEMENTS; j++)
+                        for (int j = 1; j < MAXELEMENTS; j++)
                         {
                             successcheck.insert(successnode, successvalues[j]);
                         }
@@ -98,11 +99,12 @@ namespace BinaryTreeMatch
                         //Again a very inefficient checking method.
                         for (int i = 0; i < rejected.Count; i++)
                         {
-                            BinaryTree rejectedcheck = new BinaryTree();
-                            Node rejectednode = null;
                             int[] rejectedvalues = new int[MAXELEMENTS];
+                            BinaryTree rejectedcheck = new BinaryTree();
+                            Node rejectednode = new Node(rejectedvalues[0]);
+                           
                             rejectedvalues = rejected.ElementAt(i);
-                            for (int j = 0; j < MAXELEMENTS; j++)
+                            for (int j = 1; j < MAXELEMENTS; j++)
                             {
                                 rejectedcheck.insert(rejectednode, rejectedvalues[j]);
                             }
@@ -153,7 +155,7 @@ namespace BinaryTreeMatch
 
     class BinaryTree
     {
-        private bool result = true;
+        public Node root;
         /// <summary>
         /// Inserts a new node into a tree with value v.
         /// </summary>
@@ -192,6 +194,7 @@ namespace BinaryTreeMatch
         /// <returns></returns>
         public bool ShapeCheck(Node master, Node student)
         {
+            bool result = true;
             //If Master has no children, check if student also has no children.
             if (master.lchild == null && master.rchild == null)
             {
