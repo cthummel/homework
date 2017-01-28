@@ -12,10 +12,10 @@ namespace BinaryTreeMatch
         {
             //var rejected = new List<Node>();
             //var success = new List<Node>();
-            var success = new List<int[]>();
-            var rejected = new List<int[]>();
-            //var successtree = new List<BinaryTree>();
-            //var rejectedtree = new List<BinaryTree>();
+            //var success = new List<int[]>();
+            //var rejected = new List<int[]>();
+            var successtree = new List<BinaryTree>();
+            var rejectedtree = new List<BinaryTree>();
             var uncheckedtree = new List<BinaryTree>();
 
 
@@ -28,10 +28,10 @@ namespace BinaryTreeMatch
             int MAXELEMENTS = Int32.Parse(TreeParameters[1]);
             
             //used only for the first tree we look at.
-            //bool first = true;
+            bool first = true;
 
             //used to skip steps as needed later.
-            //bool keepgoing = true;
+            bool keepgoing = true;
 
             //Reads in lines from Kattis's input one at a time.
             while ((line = Console.ReadLine()) != null)
@@ -57,88 +57,99 @@ namespace BinaryTreeMatch
                     root = tree.insert(root, values[i]);
                 }
 
-                tree.Traverse(root);
-                Console.WriteLine(" ");
+                //tree.Traverse(root);
+                //Console.WriteLine(" ");
                 uncheckedtree.Add(tree);
             }
-            //Console.WriteLine(uncheckedtree.ElementAt(0).root.value);
+            BinaryTree treecheck = new BinaryTree();
+            for(int i = 0; i < uncheckedtree.Count; i++)
+            {
+                treecheck.Traverse(uncheckedtree.ElementAt(i).root);
+                Console.WriteLine(" ");
+            }
+
+
+
+            ////CThis loop now checks the generated trees.
+            //while (uncheckedtree.Count != 0)
+            //{
+            //    //First tree is always unique so we add it to solutions.
+            //    if (first == true)
+            //    {
+            //        successtree.Add(uncheckedtree.ElementAt(0));
+            //        first = false;
+            //        keepgoing = false;
+            //    }
+
+            //    //Now we compare each tree to previously created shapes across the Solutions list and Rejected list.
+            //    if (keepgoing == true)
+            //    {
+
+            //        //First we compare current tree to Solutions to see if there is a shape match.
+
+            //        //This iteration of the checking is very costly because i recreate each solution tree again instead of 
+            //        //using a saved version from earlier.
+            //        for (int i = 0; i < successtree.Count; i++)
+            //        {
+            //            int[] successvalues = new int[MAXELEMENTS];
+            //            BinaryTree successcheck = new BinaryTree();
+            //            Node successnode = new Node(successvalues[0]);
+
+            //            successvalues = success.ElementAt(i);
+            //            for (int j = 1; j < MAXELEMENTS; j++)
+            //            {
+            //                successcheck.insert(successnode, successvalues[j]);
+            //            }
+
+            //            if (successcheck.ShapeCheck(successnode, root) == true)
+            //            {
+            //                successtree.RemoveAt(i);
+            //                rejectedtree.Add(successvalues);
+            //                keepgoing = false;
+            //                break;
+            //            }
+            //        }
+
+
+            //        //If current wasnt in Solutions list we then compare in rejected list.
+            //        if (keepgoing == true)
+            //        {
+            //            //Again a very inefficient checking method.
+            //            for (int i = 0; i < rejected.Count; i++)
+            //            {
+            //                int[] rejectedvalues = new int[MAXELEMENTS];
+            //                BinaryTree rejectedcheck = new BinaryTree();
+            //                Node rejectednode = new Node(rejectedvalues[0]);
+
+            //                rejectedvalues = rejected.ElementAt(i);
+            //                for (int j = 1; j < MAXELEMENTS; j++)
+            //                {
+            //                    rejectedcheck.insert(rejectednode, rejectedvalues[j]);
+            //                }
+
+            //                if (rejectedcheck.ShapeCheck(rejectednode, root) == true)
+            //                {
+            //                    keepgoing = false;
+            //                    break;
+            //                }
+            //            }
+
+
+            //        }
+
+            //        //if current isnt in either list we add it to Solutions list.
+            //        if (keepgoing == true)
+            //        {
+            //            success.Add(values);
+            //        }
+
+            //    }
+            //}
             
 
-                ////First tree is always unique so we add it to solutions.
-                //if (first == true)
-                //{
-                //    success.Add(values);
-                //    first = false;
-                //    keepgoing = false;
-                //}
-
-                ////Now we compare each tree to previously created shapes across the Solutions list and Rejected list.
-                //if (keepgoing == true)
-                //{
-
-                //    //First we compare current tree to Solutions to see if there is a shape match.
-
-                //    //This iteration of the checking is very costly because i recreate each solution tree again instead of 
-                //    //using a saved version from earlier.
-                //    for (int i = 0; i < success.Count; i++)
-                //    {
-                //        int[] successvalues = new int[MAXELEMENTS];
-                //        BinaryTree successcheck = new BinaryTree();
-                //        Node successnode = new Node(successvalues[0]);
-                        
-                //        successvalues = success.ElementAt(i);
-                //        for (int j = 1; j < MAXELEMENTS; j++)
-                //        {
-                //            successcheck.insert(successnode, successvalues[j]);
-                //        }
-
-                //        if (successcheck.ShapeCheck(successnode, root) == true)
-                //        {
-                //            success.RemoveAt(i);
-                //            rejected.Add(successvalues);
-                //            keepgoing = false;
-                //            break;
-                //        }
-                //    }
 
 
-                //    //If current wasnt in Solutions list we then compare in rejected list.
-                //    if (keepgoing == true)
-                //    {
-                //        //Again a very inefficient checking method.
-                //        for (int i = 0; i < rejected.Count; i++)
-                //        {
-                //            int[] rejectedvalues = new int[MAXELEMENTS];
-                //            BinaryTree rejectedcheck = new BinaryTree();
-                //            Node rejectednode = new Node(rejectedvalues[0]);
-                           
-                //            rejectedvalues = rejected.ElementAt(i);
-                //            for (int j = 1; j < MAXELEMENTS; j++)
-                //            {
-                //                rejectedcheck.insert(rejectednode, rejectedvalues[j]);
-                //            }
-
-                //            if (rejectedcheck.ShapeCheck(rejectednode, root) == true)
-                //            {
-                //                keepgoing = false;
-                //                break;
-                //            }
-                //        }
-
-
-                //    }
-
-                //    //if current isnt in either list we add it to Solutions list.
-                //    if (keepgoing == true)
-                //    {
-                //        success.Add(values);
-                //    }
-
-                //}
-                
-            
-
-            //Output the final answer.
+            ////Output the final answer.
             //Console.WriteLine(success.Count);
 
         }
