@@ -61,96 +61,66 @@ namespace BinaryTreeMatch
                 //Console.WriteLine(" ");
                 uncheckedtree.Add(tree);
             }
+
+            //Tree Checking time!
             BinaryTree treecheck = new BinaryTree();
             for(int i = 0; i < uncheckedtree.Count; i++)
             {
-                treecheck.Traverse(uncheckedtree.ElementAt(i).root);
-                Console.WriteLine(" ");
+                //First tree is always unique so we add it to solutions.
+                if (first == true)
+                {
+                    successtree.Add(uncheckedtree.ElementAt(0));
+                    first = false;
+                    keepgoing = false;
+                }
+
+                //Now we compare each tree to previously created shapes across the Solutions list and Rejected list.
+                if (keepgoing == true)
+                {
+
+                    //First we compare current tree to Solutions to see if there is a shape match.
+
+                    //This iteration of the checking is very costly because i recreate each solution tree again instead of 
+                    //using a saved version from earlier.
+                    for (int j = 0; j < successtree.Count; j++)
+                    {
+                        if (treecheck.ShapeCheck(successtree.ElementAt(j).root, uncheckedtree.ElementAt(i).root))
+                        {
+                            successtree.RemoveAt(j);
+                            rejectedtree.Add(uncheckedtree.ElementAt(i));
+                            keepgoing = false;
+                            break;
+                        }
+                    }
+
+
+                    //If current wasnt in Solutions list we then compare in rejected list.
+                    if (keepgoing == true)
+                    {
+                        //Again a very inefficient checking method.
+                        for (int k = 0; k < rejectedtree.Count; k++)
+                        {
+                            if (treecheck.ShapeCheck(rejectedtree.ElementAt(k).root, uncheckedtree.ElementAt(i).root))
+                            {
+                                keepgoing = false;
+                                break;
+                            }
+                        }
+
+
+                    }
+
+                    //if current isnt in either list we add it to Solutions list.
+                    if (keepgoing == true)
+                    {
+                        successtree.Add(uncheckedtree.ElementAt(i));
+                    }
+
+                }
             }
 
-
-
-            ////CThis loop now checks the generated trees.
-            //while (uncheckedtree.Count != 0)
-            //{
-            //    //First tree is always unique so we add it to solutions.
-            //    if (first == true)
-            //    {
-            //        successtree.Add(uncheckedtree.ElementAt(0));
-            //        first = false;
-            //        keepgoing = false;
-            //    }
-
-            //    //Now we compare each tree to previously created shapes across the Solutions list and Rejected list.
-            //    if (keepgoing == true)
-            //    {
-
-            //        //First we compare current tree to Solutions to see if there is a shape match.
-
-            //        //This iteration of the checking is very costly because i recreate each solution tree again instead of 
-            //        //using a saved version from earlier.
-            //        for (int i = 0; i < successtree.Count; i++)
-            //        {
-            //            int[] successvalues = new int[MAXELEMENTS];
-            //            BinaryTree successcheck = new BinaryTree();
-            //            Node successnode = new Node(successvalues[0]);
-
-            //            successvalues = success.ElementAt(i);
-            //            for (int j = 1; j < MAXELEMENTS; j++)
-            //            {
-            //                successcheck.insert(successnode, successvalues[j]);
-            //            }
-
-            //            if (successcheck.ShapeCheck(successnode, root) == true)
-            //            {
-            //                successtree.RemoveAt(i);
-            //                rejectedtree.Add(successvalues);
-            //                keepgoing = false;
-            //                break;
-            //            }
-            //        }
-
-
-            //        //If current wasnt in Solutions list we then compare in rejected list.
-            //        if (keepgoing == true)
-            //        {
-            //            //Again a very inefficient checking method.
-            //            for (int i = 0; i < rejected.Count; i++)
-            //            {
-            //                int[] rejectedvalues = new int[MAXELEMENTS];
-            //                BinaryTree rejectedcheck = new BinaryTree();
-            //                Node rejectednode = new Node(rejectedvalues[0]);
-
-            //                rejectedvalues = rejected.ElementAt(i);
-            //                for (int j = 1; j < MAXELEMENTS; j++)
-            //                {
-            //                    rejectedcheck.insert(rejectednode, rejectedvalues[j]);
-            //                }
-
-            //                if (rejectedcheck.ShapeCheck(rejectednode, root) == true)
-            //                {
-            //                    keepgoing = false;
-            //                    break;
-            //                }
-            //            }
-
-
-            //        }
-
-            //        //if current isnt in either list we add it to Solutions list.
-            //        if (keepgoing == true)
-            //        {
-            //            success.Add(values);
-            //        }
-
-            //    }
-            //}
-            
-
-
-
             ////Output the final answer.
-            //Console.WriteLine(success.Count);
+            Console.WriteLine(successtree.Count);
 
         }
         
